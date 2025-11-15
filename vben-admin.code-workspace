@@ -5,6 +5,10 @@
       "path": "apps/backend-mock",
     },
     {
+      "name": "@vben/shopping",
+      "path": "apps/shoping-admin",
+    },
+    {
       "name": "@vben/web-antd",
       "path": "apps/web-antd",
     },
