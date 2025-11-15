@@ -5,10 +5,11 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { RoleApi } from '#/api/core/role';
 
+import { nextTick, ref } from 'vue';
+
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { ElButton, ElMessageBox, ElTree } from 'element-plus';
-import { nextTick, ref } from 'vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -222,14 +223,16 @@ function handleEdit(row: RowType) {
   updatedrawerApi.open();
 }
 function onCreate(values: Record<string, any>) {
-  const permissionIds = (createTreeRef.value?.getCheckedKeys(false) || []) as number[];
+  const permissionIds = (createTreeRef.value?.getCheckedKeys(false) ||
+    []) as number[];
   createRoleApi({ ...(values as RowType), permissionIds }).then(() => {
     createdrawerApi.close();
     GridApi.reload();
   });
 }
 function onUpdate(values: Record<string, any>) {
-  const permissionIds = (updateTreeRef.value?.getCheckedKeys(false) || []) as number[];
+  const permissionIds = (updateTreeRef.value?.getCheckedKeys(false) ||
+    []) as number[];
   updateRoleApi({ ...(values as RowType), permissionIds }).then(() => {
     updatedrawerApi.close();
     GridApi.reload();
