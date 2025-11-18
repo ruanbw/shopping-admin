@@ -7,6 +7,7 @@ import type { RoleApi } from '#/api/core/role';
 
 import { nextTick, ref } from 'vue';
 
+import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { ElButton, ElMessageBox, ElTree } from 'element-plus';
@@ -124,11 +125,11 @@ const schema: VbenFormSchema[] = [
 ];
 
 async function resetForm(api: any) {
-  if (typeof api?.resetFields === 'function') {
-    await api.resetFields();
+  if (typeof api?.resetForm === 'function') {
+    await api.resetForm(undefined, { keepValues: false });
   }
-  if (typeof api?.resetValidation === 'function') {
-    await api.resetValidation();
+  if (typeof api?.resetValidate === 'function') {
+    await api.resetValidate();
   }
 }
 
@@ -256,13 +257,19 @@ function handleDelete(row: RowType) {
   <Page>
     <Grid>
       <template #toolbar-tools>
-        <ElButton class="mr-2" type="primary" @click="createdrawerApi.open">
-          添加角色
-        </ElButton>
+        <AccessControl :codes="['admin']">
+          <ElButton class="mr-2" type="primary" @click="createdrawerApi.open">
+            添加角色
+          </ElButton>
+        </AccessControl>
       </template>
       <template #action="{ row }">
-        <ElButton type="primary" @click="handleEdit(row)">编辑</ElButton>
-        <ElButton type="danger" @click="handleDelete(row)">删除</ElButton>
+        <AccessControl :codes="['admin']">
+          <ElButton type="primary" @click="handleEdit(row)">编辑</ElButton>
+        </AccessControl>
+        <AccessControl :codes="['admin']">
+          <ElButton type="danger" @click="handleDelete(row)">删除</ElButton>
+        </AccessControl>
       </template>
     </Grid>
     <CreateDrawer title="创建角色">

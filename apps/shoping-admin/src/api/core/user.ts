@@ -1,4 +1,4 @@
-import type { UserInfo } from '@vben/types';
+import type { RouteRecordStringComponent, UserInfo } from '@vben/types';
 
 import { requestClient } from '#/api/request';
 
@@ -65,6 +65,11 @@ export namespace UserApi {
      */
     username: string;
   }
+
+  export interface AccessResult {
+    codes: string[];
+    routes: RouteRecordStringComponent[];
+  }
 }
 
 /**
@@ -72,6 +77,11 @@ export namespace UserApi {
  */
 export async function getUserInfoApi() {
   return requestClient.get<UserInfo>('/user/info');
+}
+
+/** 获取当前登录用户的权限码与动态路由 */
+export async function getAccessApi() {
+  return requestClient.get<UserApi.AccessResult>('/user/access');
 }
 
 /**

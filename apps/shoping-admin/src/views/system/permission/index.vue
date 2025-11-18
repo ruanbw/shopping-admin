@@ -7,6 +7,7 @@ import type { PermissionApi } from '#/api/core/permission';
 
 import { nextTick } from 'vue';
 
+import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { ElButton, ElMessageBox } from 'element-plus';
@@ -137,6 +138,8 @@ const baseSchema: VbenFormSchema[] = [
     componentProps: {
       data: [],
       multiple: false,
+      showCheckbox: true,
+      checkStrictly: true,
       placeholder: '请选择上级菜单',
     },
     fieldName: 'parentId',
@@ -467,11 +470,11 @@ const baseSchema: VbenFormSchema[] = [
 ];
 
 async function resetForm(api: any) {
-  if (typeof api?.resetFields === 'function') {
-    await api.resetFields();
+  if (typeof api?.resetForm === 'function') {
+    await api.resetForm(undefined, { keepValues: false });
   }
-  if (typeof api?.resetValidation === 'function') {
-    await api.resetValidation();
+  if (typeof api?.resetValidate === 'function') {
+    await api.resetValidate();
   }
 }
 
@@ -594,13 +597,19 @@ function handleDelete(row: RowType) {
   <Page>
     <Grid>
       <template #toolbar-tools>
-        <ElButton class="mr-2" type="primary" @click="createdrawerApi.open">
-          新增权限
-        </ElButton>
+        <AccessControl :codes="['admin']">
+          <ElButton class="mr-2" type="primary" @click="createdrawerApi.open">
+            新增权限
+          </ElButton>
+        </AccessControl>
       </template>
       <template #action="{ row }">
-        <ElButton type="primary" @click="handleEdit(row)">编辑</ElButton>
-        <ElButton type="danger" @click="handleDelete(row)">删除</ElButton>
+        <AccessControl :codes="['admin']">
+          <ElButton type="primary" @click="handleEdit(row)">编辑</ElButton>
+        </AccessControl>
+        <AccessControl :codes="['admin']">
+          <ElButton type="danger" @click="handleDelete(row)">删除</ElButton>
+        </AccessControl>
       </template>
     </Grid>
     <CreateDrawer title="创建权限">

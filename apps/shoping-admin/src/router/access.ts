@@ -9,7 +9,7 @@ import { useAccessStore } from '@vben/stores';
 
 import { ElMessage } from 'element-plus';
 
-import { getPermissionAccessApi } from '#/api';
+import { getAccessApi } from '#/api';
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
 
@@ -32,7 +32,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
         duration: 1500,
         message: `${$t('common.loadingMenu')}...`,
       });
-      const { codes, routes } = await getPermissionAccessApi();
+      const { codes, routes } = await getAccessApi();
       accessStore.setAccessCodes(codes || []);
       return routes;
     },

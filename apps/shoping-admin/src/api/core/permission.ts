@@ -1,5 +1,3 @@
-import type { RouteRecordStringComponent } from '@vben/types';
-
 import { requestClient } from '#/api/request';
 
 export namespace PermissionApi {
@@ -39,11 +37,6 @@ export namespace PermissionApi {
     noBasicLayout?: boolean;
     children?: Permission[];
   }
-
-  export interface AccessResult {
-    codes: string[];
-    routes: RouteRecordStringComponent[];
-  }
 }
 
 /** 获取权限树 */
@@ -69,17 +62,4 @@ export async function updatePermissionApi(data: PermissionApi.Permission) {
 /** 删除权限 */
 export async function deletePermissionApi(id: number) {
   return requestClient.delete(`/permission/${id}`);
-}
-
-/** 获取当前登录用户的权限码与动态路由 */
-export async function getPermissionAccessApi() {
-  return requestClient.get<PermissionApi.AccessResult>('/permission/access');
-}
-
-/** 按角色ID聚合权限码与动态路由 */
-export async function getPermissionAccessByRolesApi(roleIds: number[]) {
-  return requestClient.post<PermissionApi.AccessResult>(
-    '/permission/access/by-roles',
-    { roleIds },
-  );
 }

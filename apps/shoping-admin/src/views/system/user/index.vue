@@ -8,6 +8,7 @@ import type { UserApi } from '#/api/core/user';
 
 import { onMounted, ref } from 'vue';
 
+import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { ElButton, ElMessageBox, ElTag } from 'element-plus';
@@ -453,9 +454,11 @@ function onDeleteUser(row: RowType) {
   <Page>
     <Grid>
       <template #toolbar-tools>
-        <ElButton class="mr-2" type="primary" @click="onCreateUser">
-          添加用户
-        </ElButton>
+        <AccessControl :codes="['admin']">
+          <ElButton class="mr-2" type="primary" @click="onCreateUser">
+            添加用户
+          </ElButton>
+        </AccessControl>
       </template>
       <template #status="{ row }">
         <ElTag
@@ -471,8 +474,12 @@ function onDeleteUser(row: RowType) {
         </ElTag>
       </template>
       <template #action="{ row }">
-        <ElButton type="primary" @click="onEditUser(row)">编辑</ElButton>
-        <ElButton type="danger" @click="onDeleteUser(row)">删除</ElButton>
+        <AccessControl :codes="['admin']">
+          <ElButton type="primary" @click="onEditUser(row)">编辑</ElButton>
+        </AccessControl>
+        <AccessControl :codes="['admin']">
+          <ElButton type="danger" @click="onDeleteUser(row)">删除</ElButton>
+        </AccessControl>
       </template>
     </Grid>
     <CreateDrawer title="创建用户">
