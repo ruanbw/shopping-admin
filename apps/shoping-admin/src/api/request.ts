@@ -100,3 +100,22 @@ export const requestClient = createRequestClient(apiURL, {
 });
 
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });
+
+/**
+ * 图片基础URL配置
+ */
+export const IMAGE_BASE_URL = 'http://localhost:9001/bestboot-bucket/';
+
+/**
+ * 拼接完整的图片URL
+ * @param key 图片key（从上传接口返回）
+ * @returns 完整的图片URL
+ */
+export function getImageUrl(key: string): string {
+  if (!key) return '';
+  // 如果key已经是完整URL，直接返回
+  if (key.startsWith('http://') || key.startsWith('https://')) {
+    return key;
+  }
+  return `${IMAGE_BASE_URL}${key}`;
+}
