@@ -12,7 +12,7 @@ export namespace CategoryApi {
     /**
      * 上级id
      */
-    parentId: number | null;
+    parentId: null | number;
     /**
      * 分类名称
      */
@@ -20,7 +20,7 @@ export namespace CategoryApi {
     /**
      * 分类描述
      */
-    description: string | null;
+    description: null | string;
     /**
      * 排序
      */
@@ -28,7 +28,7 @@ export namespace CategoryApi {
     /**
      * 创建时间
      */
-    createAt: string | null;
+    createAt: null | string;
     /**
      * 子分类数组（树型结构）
      */
@@ -118,4 +118,3 @@ export async function updateCategoryApi(
 export async function deleteCategoryApi(categoryId: number) {
   return requestClient.delete(`/category/${categoryId}`);
 }
-

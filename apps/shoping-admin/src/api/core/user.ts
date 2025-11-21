@@ -1,4 +1,8 @@
-import type { RouteRecordStringComponent, UserInfo } from '@vben/types';
+import type {
+  PageResult,
+  RouteRecordStringComponent,
+  UserInfo,
+} from '@vben/types';
 
 import { requestClient } from '#/api/request';
 
@@ -88,7 +92,9 @@ export async function getAccessApi() {
  * 获取用户列表
  */
 export async function getUserListApi(params: UserApi.PageUserParams) {
-  return requestClient.get<UserApi.PaginatedUser[]>('/user', { params });
+  return requestClient.get<PageResult<UserApi.PaginatedUser>>('/user', {
+    params,
+  });
 }
 
 /**

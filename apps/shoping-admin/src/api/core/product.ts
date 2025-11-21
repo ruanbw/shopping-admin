@@ -1,3 +1,5 @@
+import type { PageResult } from '@vben/types';
+
 import { requestClient } from '#/api/request';
 
 export namespace ProductApi {
@@ -112,7 +114,9 @@ export namespace ProductApi {
  * 分页查询商品列表
  */
 export async function getProductListApi(params: ProductApi.PageProductParams) {
-  return requestClient.get<ProductApi.Product[]>('/product', { params });
+  return requestClient.get<PageResult<ProductApi.Product>>('/product', {
+    params,
+  });
 }
 
 /**
@@ -125,14 +129,18 @@ export async function getProductApi(productId: number) {
 /**
  * 创建商品
  */
-export async function createProductApi(product: ProductApi.CreateProductParams) {
+export async function createProductApi(
+  product: ProductApi.CreateProductParams,
+) {
   return requestClient.post('/product', product);
 }
 
 /**
  * 更新商品
  */
-export async function updateProductApi(product: ProductApi.UpdateProductParams) {
+export async function updateProductApi(
+  product: ProductApi.UpdateProductParams,
+) {
   return requestClient.put('/product', product);
 }
 
@@ -142,4 +150,3 @@ export async function updateProductApi(product: ProductApi.UpdateProductParams) 
 export async function deleteProductApi(productId: number) {
   return requestClient.delete(`/product/${productId}`);
 }
-

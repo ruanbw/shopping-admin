@@ -28,7 +28,7 @@ interface RowType extends CategoryApi.Category {}
  * 获取父级分类名称
  */
 function getParentCategoryName(
-  parentId: number | null,
+  parentId: null | number,
   categories: CategoryApi.Category[],
 ): string {
   if (!parentId) return '-';
@@ -151,7 +151,12 @@ const gridOptions: VxeGridProps<RowType> = {
     { field: 'order', title: '排序', width: 100 },
     { field: 'description', title: '描述', minWidth: 200 },
     { field: 'createAt', title: '创建时间', width: 180 },
-    { field: 'action', title: '操作', width: 150, slots: { default: 'action' } },
+    {
+      field: 'action',
+      title: '操作',
+      width: 150,
+      slots: { default: 'action' },
+    },
   ],
   keepSource: true,
   pagerConfig: {
@@ -437,4 +442,3 @@ function onDeleteCategory(row: RowType) {
     </UpdateDrawer>
   </Page>
 </template>
-

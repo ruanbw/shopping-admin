@@ -26,7 +26,7 @@ import {
   updateProductApi,
 } from '#/api';
 import { uploadFile } from '#/api/core/upload';
-import { getImageUrl } from '#/api/request';
+import { getFileUrl } from '#/composables/file';
 
 interface RowType extends ProductApi.Product {}
 
@@ -217,7 +217,7 @@ function handleUpload(options: {
       // Element Plus Upload组件期望response包含url或name字段
       options.onSuccess?.({
         ...data,
-        url: getImageUrl(data.key),
+        url: getFileUrl(data.key),
       });
     },
     onError: options.onError,
@@ -343,7 +343,7 @@ const [UpdateDrawer, updatedrawerApi] = useVbenDrawer({
       name: 'preview-image',
       status: 'success',
       uid: Date.now(),
-      url: getImageUrl(res.previewImage),
+      url: getFileUrl(res.previewImage),
       response: { key: res.previewImage },
     };
     UpdateFormApi.setValues({
@@ -373,17 +373,6 @@ function onEditProduct(row: RowType) {
 }
 
 /**
- * 从URL中提取key
- */
-function extractKeyFromUrl(url: string): string {
-  const baseUrl = 'http://localhost:9001/bestboot-bucket/';
-  if (url.startsWith(baseUrl)) {
-    return url.replace(baseUrl, '');
-  }
-  return url;
-}
-
-/**
  * 标准化提交值
  */
 function normalizeSubmitValues(values: Record<string, any>) {
@@ -401,10 +390,10 @@ function normalizeSubmitValues(values: Record<string, any>) {
         payload.previewImage = response.key;
       } else if (response?.url) {
         // 从response.url中提取key
-        payload.previewImage = extractKeyFromUrl(response.url);
+        payload.previewImage = getFileUrl(response.url);
       } else if (doneFile.url) {
         // 从url中提取key
-        payload.previewImage = extractKeyFromUrl(doneFile.url);
+        payload.previewImage = getFileUrl(doneFile.url);
       } else {
         // 如果没有找到有效的图片，保持原值
         payload.previewImage = values.previewImage;
@@ -417,7 +406,7 @@ function normalizeSubmitValues(values: Record<string, any>) {
         if (response?.key) {
           payload.previewImage = response.key;
         } else if (existingFile.url) {
-          payload.previewImage = extractKeyFromUrl(existingFile.url);
+          payload.previewImage = getFileUrl(existingFile.url);
         }
       }
     }
@@ -486,7 +475,7 @@ function onDeleteProduct(row: RowType) {
       <template #image="{ row }">
         <img
           v-if="row.previewImage"
-          :src="getImageUrl(row.previewImage)"
+          :src="getFileUrl(row.previewImage)"
           alt="商品图片"
           style="
             width: 60px;

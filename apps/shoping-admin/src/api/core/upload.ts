@@ -3,7 +3,7 @@ import { requestClient } from '#/api/request';
 /**
  * 文件分类类型
  */
-export type FileType = 'AVATAR' | 'PRODUCT' | 'GENERAL';
+export type FileType = 'AVATAR' | 'GENERAL' | 'PRODUCT';
 
 /**
  * 文件上传响应
@@ -25,7 +25,6 @@ interface UploadFileParams {
 
 /**
  * 上传文件
- * @param params 上传参数
  */
 export async function uploadFile({
   file,
@@ -48,4 +47,3 @@ export async function uploadFile({
     onError?.(error instanceof Error ? error : new Error(String(error)));
   }
 }
-

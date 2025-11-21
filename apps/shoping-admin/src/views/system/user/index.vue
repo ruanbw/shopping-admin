@@ -23,6 +23,7 @@ import {
   getUserListApi,
   updateUserApi,
 } from '#/api';
+import { getFileUrl } from '#/composables/file';
 
 interface RowType extends UserApi.PaginatedUser {
   password: string;
@@ -148,11 +149,18 @@ const gridOptions: VxeGridProps<RowType> = {
     },
     ajax: {
       query: async ({ page }, formValues) => {
-        return await getUserListApi({
+        const result = await getUserListApi({
           current: page.currentPage,
           size: page.pageSize,
           ...formValues,
         });
+
+        result.records.forEach((item: UserApi.PaginatedUser) => ({
+          ...item,
+          avatar: item.avatar ? getFileUrl(item.avatar) : '',
+        }));
+
+        return result;
       },
     },
   },
@@ -277,18 +285,6 @@ const schema: VbenFormSchema[] = [
     fieldName: 'mobile',
     // 界面显示的label
     label: '手机号',
-  },
-  {
-    // 组件需要在 #/adapter.ts内注册，并加上类型
-    component: 'Input',
-    // 对应组件的参数
-    componentProps: {
-      placeholder: '请输入',
-    },
-    // 字段名
-    fieldName: 'avatar',
-    // 界面显示的label
-    label: '头像',
   },
 ];
 

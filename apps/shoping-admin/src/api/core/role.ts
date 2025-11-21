@@ -1,4 +1,4 @@
-import type { BasicOption } from '@vben/types';
+import type { BasicOption, PageResult } from '@vben/types';
 
 import { requestClient } from '#/api/request';
 
@@ -32,7 +32,7 @@ export async function getRoleOptionsApi() {
  * 获取角色列表
  */
 export async function getRoleListApi(params: RoleApi.PageRoleParams) {
-  return requestClient.get<RoleApi.Role[]>('/role', { params });
+  return requestClient.get<PageResult<RoleApi.Role>>('/role', { params });
 }
 
 /**
